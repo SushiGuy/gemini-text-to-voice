@@ -1,0 +1,20 @@
+{
+  "name": "gemini-text-to-voice",
+  "version": "1.0.0",
+  "description": "A simple Node.js application to convert text to speech using Google's Text-to-Speech API.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "gemini",
+    "text-to-speech",
+    "google-cloud"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.14.0",
+    "dotenv": "^16.4.5"
+  }
+}
