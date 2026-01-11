@@ -62,3 +62,48 @@ The example uses the `Puck` voice. You can change this to any of the following p
 - `Kore`
 
 These voices are available through the Gemini API's text-to-speech models.
+
+## Notes
+
+### Google Cloud Console
+
+Create a project before you can get an API key
+
+https://console.cloud.google.com/
+
+* Project name: Gemini-Api-Key-Project
+* Project number: 955770032652
+* Project ID: gemini-api-key-project-484003
+
+### Google AI Studio
+
+Import the Cloud Console project in AI Studio in order to create an API Keys
+
+https://aistudio.google.com/api-keys
+
+## Blockers
+
+### Gemini API Rate Limit
+
+If a "rate limit" error occurs, monitor your usage and request limits here
+
+https://ai.dev/rate-limit
+
+Rate limits may also exist until a billing card is put on file (even though access is still free)
+
+https://console.cloud.google.com/billing
+
+Takes 15 to 30 minutes (and sometimes up to 24 hours) for a new billing account to propagate across all Google services. If you just added the card, the API might still be looking at a cached version of your "Unbilled/Limit 0" status.
+
+### Gemini API
+
+API can be disabled by default. Visit the following page and click the "Enable" button
+
+https://console.cloud.google.com/apis/library/generativelanguage.googleapis.com?project=upbeat-grammar-484005-n8
+
+### Gemini Service Account
+
+Account created. This may not have been necessary
+
+* Service account name: JeremyGeminiService
+* Service account ID: jeremygeminiservice

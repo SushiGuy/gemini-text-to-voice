@@ -4,7 +4,9 @@
   "description": "A simple Node.js application to convert text to speech using Google's Text-to-Speech API.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "list-models": "node index.js --list-models",
+    "list-gen-models": "node index.js --list-gen-models"
   },
   "keywords": [
     "gemini",
@@ -15,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.14.0",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "wavefile": "^11.0.0"
   }
 }
