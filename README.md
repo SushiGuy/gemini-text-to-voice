@@ -9,47 +9,51 @@ This Node.js application converts a string of text into a WAV audio file using t
 
 ## Setup
 
-1.  **Clone the repository or download the code.**
+- Clone or download the repository
+-  Get your API key from Google AI Studio: [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+-  Create a copy of the `.env.example` file and rename it to `.env`.
+-  In the `.env` file, set the `GEMINI_API_KEY` variable to the API key you just obtained.
 
-2.  **Install dependencies:**
-    Open your terminal in the project directory and run:
-    ```bash
-    npm install
-    ```
-    This will install the `@google/generative-ai` and `dotenv` packages.
+Example `.env` file:
+```
+GEMINI_API_KEY="your...key...here"
+```
 
-3.  **Set up your Gemini API Key:**
-    a.  Get your API key from Google AI Studio: [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
-    b.  Create a copy of the `.env.example` file and rename it to `.env`.
-    c.  In the `.env` file, set the `GEMINI_API_KEY` variable to the API key you just obtained.
-    
-    For example:
-    ```
-    GEMINI_API_KEY="AIzaSy...your...key...here..."
-    ```
+## Quick Start
 
-## Usage
+To run the program:
 
-1.  **Modify the input text and voice:**
-    Open the `index.js` file and change the values of the `textToConvert` and `chosenVoice` variables to your liking.
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-    ```javascript
-    const textToConvert = 'Hello, this is a test of the Gemini text-to-speech API with the new voices.';
-    const chosenVoice = 'Puck'; // Change this to any of the available voice names
-    const outputFileName = 'output.wav';
-    ```
+2. Set up your `.env` file with your `GEMINI_API_KEY` (see Setup section below)
 
-2.  **Run the script:**
-    Execute the following command in your terminal:
-    ```bash
-    npm start
-    ```
-    or
-    ```bash
-    node index.js
-    ```
+3. Edit the text and voice in `index.js`:
+   ```javascript
+   const textToConvert = 'Your text here';
+   const chosenVoice = 'Puck'; // or another available voice
+   ```
 
-    This will create an `output.wav` file in the project directory containing the synthesized speech.
+4. Run the program:
+   ```bash
+   npm start
+   ```
+   or
+   ```bash
+   node index.js
+   ```
+
+The script will generate an `output.wav` file with the synthesized speech.
+
+Available commands:
+- `npm start` - Convert text to speech (default tts-mode)
+- `npm run list-models` - List available models
+- `npm run list-gen-models` - List generative models
+- `npm start tts-mode` - Text-to-speech mode (TTS API)
+- `npm start live-mode` - Native audio engine mode (Live API)
+- `npm start test-mode` - Experimenting with latest from Gemini conversation
 
 ## Available Voices
 
@@ -107,3 +111,11 @@ Account created. This may not have been necessary
 
 * Service account name: JeremyGeminiService
 * Service account ID: jeremygeminiservice
+1/11/2026 12:50pm service account deleted and calls started being rejected, quota exceeded limit 10. Looks like it is just that.
+Exceeded 10 requests per day rate limit
+https://aistudio.google.com/usage?timeRange=last-7-days&project=gemini-api-key-project-484003&tab=rate-limit
+
+Try again tomorrow
+
+Search results from this week (Jan 2026) confirm that many developers are seeing exactly what you described:
+The "Sizzling" Bug: There is a confirmed regression in the 2.5-flash-preview-tts model where a "metallic sizzling" or "radio interference" background noise appears, even on short text.
