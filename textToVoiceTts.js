@@ -1,6 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const fs = require('fs');
-const { WaveFile } = require('wavefile');
+const { saveWavFile } = require('./helpers');
 
 require('dotenv').config();
 
@@ -52,24 +51,10 @@ async function textToVoiceTts(text, voiceName, outputFile) {
         const audioPart = response.candidates[0].content.parts.find(p => p.inlineData);
 
         if (audioPart && audioPart.inlineData) {
-            // 1. Convert Base64 to Buffer
+            // Convert Base64 to Buffer and save as WAV file
             const pcmBuffer = Buffer.from(audioPart.inlineData.data, "base64");
-
             console.log(`📊 PCM Buffer size: ${pcmBuffer.length} bytes`);
-
-            // 2. Create a new WaveFile object
-            const wav = new WaveFile();
-
-            // 3. Create the WAV file from the raw PCM data
-            // API returns: 1 channel (mono), 24000Hz, 16-bit
-            // Some 2026 updates shifted the TTS to 16kHz
-            // Try 16000 if 24000 sounds scratchy; this is the common 2026 'fallback'
-            const sampleRate = 24000; // or 16000
-            wav.fromScratch(1, sampleRate, '16', pcmBuffer);
-
-            // 4. Write the file to disk
-            fs.writeFileSync(outputFile, wav.toBuffer());
-            console.log(`✅ Success! Playable file saved: ${outputFile}`);
+            saveWavFile(pcmBuffer, outputFile);
         } else {
             console.error("❌ Model returned text response or no audio:", result.response.text());
         }

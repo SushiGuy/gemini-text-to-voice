@@ -27,21 +27,37 @@ const nativeAudioOutputFile = 'output-live.wav';
 // The following code will only run if the file is executed directly.
 if (require.main === module) {
     if (!process.env.GEMINI_API_KEY) {
-        console.error("Please set your GEMINI_API_KEY in a .env file.");
-    } else if (process.argv[2] === 'list-models') {
-        listAvailableModels();
-    } else if (process.argv[2] === 'list-gen-models') {
-        listGenerativeModels();
-    } else if (process.argv[2] === 'tts-mode') {
-        textToVoiceTts(textToConvert, chosenVoice, outputFileNameTts);
-    } else if (process.argv[2] === 'live-mode') {
-        textToVoiceNative(nativeAudioText, nativeAudioVoice, nativeAudioOutputFile);
-    } else if (process.argv[2] === 'test-mode') {
-        textToVoiceTest(nativeAudioText, nativeAudioVoice, nativeAudioOutputFile);
-    } else if (!textToConvert || !chosenVoice || (!outputFileNameTts || !nativeAudioOutputFile)) {
-        console.error('Please set the textToConvert, chosenVoice, and outputFileName variables.');
-    } else {
-        textToVoiceTts(textToConvert, chosenVoice, outputFileNameTts);
+        console.error("❌ Please set your GEMINI_API_KEY in a .env file.");
+        process.exit(1);
+    }
+    
+    const command = process.argv[2];
+    
+    switch (command) {
+        case 'list-models':
+            listAvailableModels();
+            break;
+        case 'list-gen-models':
+            listGenerativeModels();
+            break;
+        case 'tts-mode':
+            textToVoiceTts(textToConvert, chosenVoice, outputFileNameTts);
+            break;
+        case 'live-mode':
+            textToVoiceNative(nativeAudioText, nativeAudioVoice, nativeAudioOutputFile);
+            break;
+        case 'test-mode':
+            textToVoiceTest(nativeAudioText, nativeAudioVoice, nativeAudioOutputFile);
+            break;
+        default:
+            console.log('Usage: npm start <command>');
+            console.log('\nAvailable commands:');
+            console.log('  list-models     - List all available Gemini models');
+            console.log('  list-gen-models - List models with generateContent support');
+            console.log('  tts-mode        - Generate speech using TTS API');
+            console.log('  live-mode       - Generate speech using Live WebSocket API');
+            console.log('  test-mode       - Generate speech using Test mode');
+            break;
     }
 }
 

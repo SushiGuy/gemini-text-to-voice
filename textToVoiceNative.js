@@ -1,8 +1,7 @@
 require('dotenv').config();
 
 const WebSocket = require('ws');
-const fs = require("fs");
-const { WaveFile } = require("wavefile");
+const { saveWavFile } = require('./helpers');
 
 const API_KEY = process.env.GEMINI_API_KEY;
 const URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${API_KEY}`;
@@ -14,14 +13,6 @@ const URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelang
 // NOPE gemini-live-2.5-flash-native-audio - Vertext AI -- Must create a service account
 const GEMINI_MODEL = 'gemini-2.5-flash-native-audio-preview-12-2025';
 
-function saveWavFile(pcmBuffer, outputFile) {
-    const wav = new WaveFile();
-    // 1 Channel, 24kHz, 16-bit is the Native Audio standard
-    wav.fromScratch(1, 24000, "16", pcmBuffer);
-    fs.writeFileSync(outputFile, wav.toBuffer());
-    console.log(`✅ Success! Native audio saved (Size: ${pcmBuffer.length} bytes)`);
-}
-
 /**
  * Synthesizes speech from text using a direct WebSocket connection to the Gemini API.
  * @param {string} text The text to synthesize.
@@ -29,11 +20,6 @@ function saveWavFile(pcmBuffer, outputFile) {
  * @param {string} outputFile The path to save the output file to.
  */
 async function textToVoiceNative(text, voiceName, outputFile) {
-    if (!API_KEY) {
-        console.error("Please set your GEMINI_API_KEY in a .env file.");
-        return;
-    }
-
     const ws = new WebSocket(URL);
     let audioChunks = [];
 
@@ -96,7 +82,7 @@ async function textToVoiceNative(text, voiceName, outputFile) {
         }
     });
 
-    ws.on('error', (err) => console.error('Socket Error:', err));
+    ws.on('error', (err) => console.error('❌ Socket Error:', err));
     ws.on('close', (code, reason) => {
         console.log(`Socket connection closed. Code: ${code}`);
     });

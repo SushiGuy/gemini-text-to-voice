@@ -1,26 +1,8 @@
 const WebSocket = require('ws');
 const { GoogleGenAI } = require("@google/genai");
-const fs = require("fs");
-const { WaveFile } = require("wavefile");
+const { saveWavFile } = require('./helpers');
 
 require('dotenv').config();
-
-/**
- * Saves the collected audio chunks as a WAV file.
- * @param {Buffer[]} audioChunks An array of audio data buffers.
- * @param {string} outputFile The path to save the output file to.
- */
-function saveWavFile(audioChunks, outputFile) {
-    const pcmBuffer = Buffer.concat(audioChunks);
-    const wav = new WaveFile();
-
-    // API returns: 1 channel (mono), 24000Hz, 16-bit PCM
-    const sampleRate = 24000;
-    wav.fromScratch(1, sampleRate, '16', pcmBuffer);
-
-    fs.writeFileSync(outputFile, wav.toBuffer());
-    console.log(`✅ Success! Playable file saved: ${outputFile}`);
-}
 
 // Use the 12-2025 version which is currently the stable preview for Bidi
 const modelId = "gemini-2.5-flash-native-audio-preview-12-2025";

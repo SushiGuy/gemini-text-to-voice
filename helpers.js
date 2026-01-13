@@ -2,7 +2,27 @@
 require('dotenv').config();
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const fs = require("fs");
+const { WaveFile } = require("wavefile");
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+/**
+ * Saves PCM audio data as a WAV file.
+ * @param {Buffer|Buffer[]} pcmData A buffer or array of buffers containing PCM audio data.
+ * @param {string} outputFile The path to save the output file to.
+ */
+function saveWavFile(pcmData, outputFile) {
+    const pcmBuffer = Array.isArray(pcmData) ? Buffer.concat(pcmData) : pcmData;
+    console.log(`📊 PCM Buffer size: ${pcmBuffer.length} bytes`);
+    const wav = new WaveFile();
+
+    // 1 Channel (Mono), 24kHz, 16-bit is the Gemini Audio standard
+    wav.fromScratch(1, 24000, "16", pcmBuffer);
+    fs.writeFileSync(outputFile, wav.toBuffer());
+    console.log('Saving audio to ', outputFile);
+    console.log(`✅ Success! Audio file saved (Size: ${pcmBuffer.length} bytes)`);
+}
 
 /**
  * Lists all available models from the Gemini API.
@@ -22,7 +42,7 @@ async function listAvailableModels() {
             console.log(data);
         }
     } catch (error) {
-        console.error("ERROR listing models:", error);
+        console.error("❌ Error listing models:", error);
     }
 }
 
@@ -55,11 +75,12 @@ async function listGenerativeModels() {
             console.log(data);
         }
     } catch (error) {
-        console.error("ERROR listing audio models:", error);
+        console.error("❌ Error listing audio models:", error);
     }
 }
 
 module.exports = {
     listAvailableModels,
-    listGenerativeModels
+    listGenerativeModels,
+    saveWavFile
 };
