@@ -4,6 +4,8 @@ This Node.js application converts a string of text into a WAV audio file using t
 
 ## Temporary Notes
 
+1/13/2026 Used work Copilot (Cluade) to fix the native method. Everything working well except audio output still quiet / not rendering. No matter the method used, live or tts.
+
 1/12/2026 7:13pm Exhausted Copilot credits for personal account. Checking everything in for easy access from work machine. Gemini code assist works but is slow and awkward. Still do not have a single working audio file
 
 1/11/2026 12:50pm service account deleted and calls started being rejected, quota exceeded limit 10. Looks like it is just that. Exceeded 10 requests per day rate limit
@@ -86,8 +88,10 @@ Create a project before you can get an API key
 https://console.cloud.google.com/
 
 * Project name: Gemini-Api-Key-Project
-* Project number: 955770032652
 * Project ID: gemini-api-key-project-484003
+* Project number: 955770032652
+* Project path: projects/955770032652
+* Api Key Name: Generative Language API Key, created on Jan 10, 2026
 
 ### Google AI Studio
 

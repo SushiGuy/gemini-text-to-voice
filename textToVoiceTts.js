@@ -18,6 +18,8 @@ async function textToVoiceTts(text, voiceName, outputFile) {
     // These voices are part of the Gemini family of models.
 
     try {
+        console.log(`🔊 Generating speech for voice: ${voiceName}`);
+        console.log('Please wait, this could take a minute...');
         // Use a model that supports multimodal output
         // gemini-2.0-flash-exp	-- Use for Real-time conversation, Use method "bidiGenerateContent"
         // gemini-2.5-flash-preview-tts -- Recommended for speed/cost - WORKING! 10 requests/day, Use method "generateContent"
@@ -33,7 +35,6 @@ async function textToVoiceTts(text, voiceName, outputFile) {
                 }] 
             }],
             generationConfig: {
-                //responseMimeType: "audio/wave",
                 responseModalities: ["audio"],
                 speechConfig: {
                     voiceConfig: {

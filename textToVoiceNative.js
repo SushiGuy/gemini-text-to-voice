@@ -1,15 +1,8 @@
+require('dotenv').config();
+
 const WebSocket = require('ws');
-const { GoogleGenAI } = require("@google/genai");
 const fs = require("fs");
 const { WaveFile } = require("wavefile");
-
-// 1. Initialize with v1beta (CRITICAL for Bidi/Live API)
-const ai = new GoogleGenAI({ 
-    apiKey: process.env.GEMINI_API_KEY,
-    apiVersion: "v1beta" 
-});
-
-require('dotenv').config();
 
 const API_KEY = process.env.GEMINI_API_KEY;
 const URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${API_KEY}`;
@@ -19,7 +12,7 @@ const URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelang
 // NOPE gemini-2.5-flash-native-audio-preview-09-2025 - AI Studio
 // NOPE gemini-2.5-flash-native-audio-preview-12-2025 - AI Studio -- The most stable 2026 model for live "native" voice (Best for low-latency, high-quality native audio)
 // NOPE gemini-live-2.5-flash-native-audio - Vertext AI -- Must create a service account
-const GEMINI_MODEL = 'gemini-2.0-flash-exp';
+const GEMINI_MODEL = 'gemini-2.5-flash-native-audio-preview-12-2025';
 
 function saveWavFile(pcmBuffer, outputFile) {
     const wav = new WaveFile();
@@ -50,7 +43,7 @@ async function textToVoiceNative(text, voiceName, outputFile) {
         // 1. Send Setup Message
         const setupMessage = {
             setup: {
-                model: `models\\${GEMINI_MODEL}`,
+                model: `models/${GEMINI_MODEL}`,
                 generation_config: {
                     response_modalities: ["AUDIO"],
                     speech_config: {
@@ -88,23 +81,24 @@ async function textToVoiceNative(text, voiceName, outputFile) {
                     audioChunks.push(buffer);
                 }
             });
+        }
 
-            // Check if the model has finished speaking
-            if (response.serverContent.turnComplete) {
-                console.log('Turn complete. Saving file...');
-                if (audioChunks.length > 0) {
-                    saveWavFile(audioChunks, outputFile);
-                } else {
-                    console.log('No audio chunks received, file not saved.');
-                }
-                ws.close();
+        // Check if the model has finished speaking
+        if (response.serverContent && response.serverContent.turnComplete) {
+            console.log(`Turn complete. Saving file ${outputFile}...`);
+            if (audioChunks.length > 0) {
+                const pcmBuffer = Buffer.concat(audioChunks);
+                saveWavFile(pcmBuffer, outputFile);
+            } else {
+                console.log('No audio chunks received, file not saved.');
             }
+            ws.close();
         }
     });
 
     ws.on('error', (err) => console.error('Socket Error:', err));
     ws.on('close', (code, reason) => {
-        console.log(`Socket connection closed. Code: ${code}, Reason: ${reason}`);
+        console.log(`Socket connection closed. Code: ${code}`);
     });
 }
 
