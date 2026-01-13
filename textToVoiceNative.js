@@ -1,16 +1,18 @@
 require('dotenv').config();
 
 const WebSocket = require('ws');
-const { saveWavFile } = require('./helpers');
+const { saveWavFile, getCloseCodeMessage } = require('./helpers');
 
 const API_KEY = process.env.GEMINI_API_KEY;
-const URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${API_KEY}`;
+const ALPHA_OR_BETA = 'v1alpha'; // Change to 'v1alpha' if using an alpha key
+const URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.${ALPHA_OR_BETA}.GenerativeService.BidiGenerateContent?key=${API_KEY}`;
 
 // Use a model that supports multimodal output
 // gemini-2.0-flash-exp	-- Only model open for the free tier. Use it for Real-time conversation (The initial experimental model that introduced the Live API)
-// NOPE gemini-2.5-flash-native-audio-preview-09-2025 - AI Studio
-// NOPE gemini-2.5-flash-native-audio-preview-12-2025 - AI Studio -- The most stable 2026 model for live "native" voice (Best for low-latency, high-quality native audio)
-// NOPE gemini-live-2.5-flash-native-audio - Vertext AI -- Must create a service account
+// gemini-2.5-flash-native-audio-preview-09-2025 - AI Studio
+// gemini-2.5-flash-native-audio-preview-12-2025 - AI Studio -- The most stable 2026 model for live "native" voice (Best for low-latency, high-quality native audio)
+// gemini-live-2.5-flash-native-audio - Vertext AI -- Must create a service account
+// gemini-2.5-flash-native-audio-dialog - v1beta only, create a service account, AI Studio shows "Unlimited" calls per day available
 const GEMINI_MODEL = 'gemini-2.5-flash-native-audio-preview-12-2025';
 
 /**
@@ -84,7 +86,11 @@ async function textToVoiceNative(text, voiceName, outputFile) {
 
     ws.on('error', (err) => console.error('❌ Socket Error:', err));
     ws.on('close', (code, reason) => {
-        console.log(`Socket connection closed. Code: ${code}`);
+        const closeMessage = getCloseCodeMessage(code);
+        console.log(`🔌 Socket connection closed: ${closeMessage}`);
+        if (reason) {
+            console.log(`   Reason: ${reason}`);
+        }
     });
 }
 

@@ -53,7 +53,6 @@ async function textToVoiceTts(text, voiceName, outputFile) {
         if (audioPart && audioPart.inlineData) {
             // Convert Base64 to Buffer and save as WAV file
             const pcmBuffer = Buffer.from(audioPart.inlineData.data, "base64");
-            console.log(`📊 PCM Buffer size: ${pcmBuffer.length} bytes`);
             saveWavFile(pcmBuffer, outputFile);
         } else {
             console.error("❌ Model returned text response or no audio:", result.response.text());
