@@ -2,6 +2,16 @@
 
 This Node.js application converts a string of text into a WAV audio file using the Google Gemini API.
 
+## Temporary Notes
+
+1/12/2026 7:13pm Exhausted Copilot credits for personal account. Checking everything in for easy access from work machine. Gemini code assist works but is slow and awkward. Still do not have a single working audio file
+
+1/11/2026 12:50pm service account deleted and calls started being rejected, quota exceeded limit 10. Looks like it is just that. Exceeded 10 requests per day rate limit
+https://aistudio.google.com/usage?timeRange=last-7-days&project=gemini-api-key-project-484003&tab=rate-limit
+
+Gemini: Search results from this week (Jan 2026) confirm that many developers are seeing exactly what you described:
+The "Sizzling" Bug: There is a confirmed regression in the 2.5-flash-preview-tts model where a "metallic sizzling" or "radio interference" background noise appears, even on short text.
+
 ## Prerequisites
 
 - Node.js installed (https://nodejs.org/)
@@ -111,11 +121,3 @@ Account created. This may not have been necessary
 
 * Service account name: JeremyGeminiService
 * Service account ID: jeremygeminiservice
-1/11/2026 12:50pm service account deleted and calls started being rejected, quota exceeded limit 10. Looks like it is just that.
-Exceeded 10 requests per day rate limit
-https://aistudio.google.com/usage?timeRange=last-7-days&project=gemini-api-key-project-484003&tab=rate-limit
-
-Try again tomorrow
-
-Search results from this week (Jan 2026) confirm that many developers are seeing exactly what you described:
-The "Sizzling" Bug: There is a confirmed regression in the 2.5-flash-preview-tts model where a "metallic sizzling" or "radio interference" background noise appears, even on short text.
