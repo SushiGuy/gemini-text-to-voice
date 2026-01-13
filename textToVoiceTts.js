@@ -1,5 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { saveWavFile } = require('./helpers');
+const { saveWavFile, normalizePCM } = require('./helpers');
 
 require('dotenv').config();
 
@@ -52,7 +52,11 @@ async function textToVoiceTts(text, voiceName, outputFile) {
 
         if (audioPart && audioPart.inlineData) {
             // Convert Base64 to Buffer and save as WAV file
-            const pcmBuffer = Buffer.from(audioPart.inlineData.data, "base64");
+            let pcmBuffer = Buffer.from(audioPart.inlineData.data, "base64");
+
+            // APPLY NORMALIZATION
+            pcmBuffer = normalizePCM(pcmBuffer);
+
             saveWavFile(pcmBuffer, outputFile);
         } else {
             console.error("❌ Model returned text response or no audio:", result.response.text());

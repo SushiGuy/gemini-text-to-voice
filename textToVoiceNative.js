@@ -1,7 +1,11 @@
 require('dotenv').config();
 
 const WebSocket = require('ws');
-const { saveWavFile, getCloseCodeMessage } = require('./helpers');
+const {
+    saveWavFile,
+    getCloseCodeMessage,
+    normalizePCM
+} = require('./helpers');
 
 const API_KEY = process.env.GEMINI_API_KEY;
 const ALPHA_OR_BETA = 'v1alpha'; // Change to 'v1alpha' if using an alpha key
@@ -13,7 +17,7 @@ const URL = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelang
 // gemini-2.5-flash-native-audio-preview-12-2025 - AI Studio -- The most stable 2026 model for live "native" voice (Best for low-latency, high-quality native audio)
 // gemini-live-2.5-flash-native-audio - Vertext AI -- Must create a service account
 // gemini-2.5-flash-native-audio-dialog - v1beta only, create a service account, AI Studio shows "Unlimited" calls per day available
-const GEMINI_MODEL = 'gemini-2.5-flash-native-audio-preview-12-2025';
+const GEMINI_MODEL = 'gemini-2.0-flash-exp';
 
 /**
  * Synthesizes speech from text using a direct WebSocket connection to the Gemini API.
@@ -75,7 +79,11 @@ async function textToVoiceNative(text, voiceName, outputFile) {
         if (response.serverContent && response.serverContent.turnComplete) {
             console.log(`Turn complete. Saving file ${outputFile}...`);
             if (audioChunks.length > 0) {
-                const pcmBuffer = Buffer.concat(audioChunks);
+                let pcmBuffer = Buffer.concat(audioChunks);
+
+                // APPLY NORMALIZATION
+                pcmBuffer = normalizePCM(pcmBuffer);
+
                 saveWavFile(pcmBuffer, outputFile);
             } else {
                 console.log('No audio chunks received, file not saved.');

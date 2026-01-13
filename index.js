@@ -16,12 +16,12 @@ require('dotenv').config();
 // You can change the text and voice by modifying the variables below.
 
 const textToConvert = 'Hello, this is a test of the Gemini text-to-speech API with the new voices.';
-const chosenVoice = 'Charon'; // Change this to "Aoede", "Charon", "Fenrir", "Kore", or "Puck"
+const chosenVoice = 'Aoede'; // Change this to "Aoede", "Charon", "Fenrir", "Kore", or "Puck"
 const outputFileNameTts = 'output-tts.wav';
 
 // Native audio specific strings
 const nativeAudioText = 'This is a test of the native audio engine.';
-const nativeAudioVoice = 'Puck'; // Change this to "Aoede", "Charon", "Fenrir", "Kore", or "Puck"
+const nativeAudioVoice = 'Aoede'; // Change this to "Aoede", "Charon", "Fenrir", "Kore", or "Puck"
 const nativeAudioOutputFile = 'output-live.wav';
 
 // The following code will only run if the file is executed directly.

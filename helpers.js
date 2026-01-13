@@ -106,9 +106,42 @@ async function listGenerativeModels() {
     }
 }
 
+/**
+ * Normalizes 16-bit PCM data to hit maximum volume (32767).
+ * This fixes the "quiet" audio issue.
+ */
+function normalizePCM(buffer) {
+    console.log("Normalizing audio levels...");
+    Console.lot("Normalizing recommended by Gemini, but as of 1/13 has no effect on either Live or Tts files. Still quiet and scratchy.")
+
+    // Create a 16-bit view of the raw buffer
+    const pcm16 = new Int16Array(buffer.buffer, buffer.byteOffset, buffer.length / 2);
+    let maxAmplitude = 0;
+
+    // 1. Find the peak amplitude
+    for (let i = 0; i < pcm16.length; i++) {
+        const absValue = Math.abs(pcm16[i]);
+        if (absValue > maxAmplitude) maxAmplitude = absValue;
+    }
+
+    // 2. If it's already loud or silent, don't touch it
+    if (maxAmplitude === 0 || maxAmplitude > 30000) return buffer;
+
+    // 3. Calculate scaling factor (Target 32767 / Current Peak)
+    const scaleFactor = 32767 / maxAmplitude;
+
+    // 4. Apply gain
+    for (let i = 0; i < pcm16.length; i++) {
+        pcm16[i] = Math.max(-32768, Math.min(32767, pcm16[i] * scaleFactor));
+    }
+
+    return Buffer.from(pcm16.buffer);
+}
+
 module.exports = {
     listAvailableModels,
     listGenerativeModels,
     saveWavFile,
-    getCloseCodeMessage
+    getCloseCodeMessage,
+    normalizePCM
 };
