@@ -1,5 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { saveWavFile, normalizePCM } = require('./helpers');
+const { saveWavFile } = require('./helpers');
+const { saveProcessedWavFile } = require('./helpers-audio');
 
 require('dotenv').config();
 
@@ -51,13 +52,11 @@ async function textToVoiceTts(text, voiceName, outputFile) {
         const audioPart = response.candidates[0].content.parts.find(p => p.inlineData);
 
         if (audioPart && audioPart.inlineData) {
-            // Convert Base64 to Buffer and save as WAV file
+            // Convert Base64 to Buffer and process with improved audio pipeline
             let pcmBuffer = Buffer.from(audioPart.inlineData.data, "base64");
 
-            // APPLY NORMALIZATION
-            pcmBuffer = normalizePCM(pcmBuffer);
-
-            saveWavFile(pcmBuffer, outputFile);
+            // Use the new improved audio processing from helpers-audio.js
+            saveProcessedWavFile(pcmBuffer, outputFile);
         } else {
             console.error("❌ Model returned text response or no audio:", result.response.text());
         }
