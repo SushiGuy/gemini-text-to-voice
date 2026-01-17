@@ -1,7 +1,6 @@
 const { listAvailableModels, listGenerativeModels } = require("./helpers");
 const { textToVoiceNative } = require("./textToVoiceNative");
 const { textToVoiceTts } = require("./textToVoiceTts");
-const { textToVoiceTest } = require("./textToVoiceTest");
 
 // Load environment variables from .env file
 require('dotenv').config();
@@ -16,12 +15,12 @@ require('dotenv').config();
 // You can change the text and voice by modifying the variables below.
 
 const textToConvert = 'Hello, this is a test of the Gemini text-to-speech API with the new voices.';
-const chosenVoice = 'Aoede'; // Change this to "Aoede", "Charon", "Fenrir", "Kore", or "Puck"
+const chosenVoice = 'Zephyr';  // See Readme for full voice list
 const outputFileNameTts = 'output-tts.wav';
 
 // Native audio specific strings
 const nativeAudioText = 'This is a test of the native audio engine.';
-const nativeAudioVoice = 'Aoede'; // Change this to "Aoede", "Charon", "Fenrir", "Kore", or "Puck"
+const nativeAudioVoice = 'Aoede';  // See Readme for full voice list
 const nativeAudioOutputFile = 'output-live.wav';
 
 // The following code will only run if the file is executed directly.
@@ -46,9 +45,6 @@ if (require.main === module) {
         case 'live-mode':
             textToVoiceNative(nativeAudioText, nativeAudioVoice, nativeAudioOutputFile);
             break;
-        case 'test-mode':
-            textToVoiceTest(nativeAudioText, nativeAudioVoice, nativeAudioOutputFile);
-            break;
         default:
             console.log('Usage: npm start <command>');
             console.log('\nAvailable commands:');
@@ -56,7 +52,6 @@ if (require.main === module) {
             console.log('  list-gen-models - List models with generateContent support');
             console.log('  tts-mode        - Generate speech using TTS API');
             console.log('  live-mode       - Generate speech using Live WebSocket API');
-            console.log('  test-mode       - Generate speech using Test mode');
             break;
     }
 }
@@ -64,7 +59,6 @@ if (require.main === module) {
 module.exports = {
     textToVoiceNative,
     textToVoiceTts,
-    textToVoiceTest,
     listAvailableModels,
     listGenerativeModels
 };

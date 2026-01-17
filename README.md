@@ -65,17 +65,41 @@ Available commands:
 - `npm run list-gen-models` - List generative models
 - `npm start tts-mode` - Text-to-speech mode (TTS API)
 - `npm start live-mode` - Native audio engine mode (Live API)
-- `npm start test-mode` - Experimenting with latest from Gemini conversation
 
 ## Available Voices
 
 The example uses the `Puck` voice. You can change this to any of the following pre-built voices:
 
-- `Puck`
-- `Charon`
+- `Achernar`
+- `Achird`
+- `Algenib`
+- `Algieba`
+- `Alnilam`
 - `Aoede`
+- `Autonoe`
+- `Callirrhoe`
+- `Charon`
+- `Despina`
+- `Enceladus`
+- `Erinome`
 - `Fenrir`
+- `Gacrux`
+- `Iapetus`
 - `Kore`
+- `Laomedeia`
+- `Leda`
+- `Orus`
+- `Puck`
+- `Pulcherrima`
+- `Rasalgethi`
+- `Sadachbia`
+- `Sadaltager`
+- `Schedar`
+- `Sulafat`
+- `Umbriel`
+- `Vindemiatrix`
+- `Zephyr`
+- `Zubenelgenubi`
 
 These voices are available through the Gemini API's text-to-speech models.
 

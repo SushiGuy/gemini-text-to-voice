@@ -13,10 +13,6 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
  * @param {string} outputFile The path to save the output file to.
  */
 async function textToVoiceTts(text, voiceName, outputFile) {
-    // A selection of available voices.
-    // Options: Aoede, Charon, Fenrir, Kore, Puck
-    // These voices are part of the Gemini family of models.
-
     try {
         console.log(`🔊 Generating speech for voice: ${voiceName}`);
         console.log('Please wait, this could take a minute...');
