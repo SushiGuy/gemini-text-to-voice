@@ -15,10 +15,10 @@ require('dotenv').config();
 //
 // You can change the text and voice by modifying the variables below.
 
-const chosenVoice = VOICES.AOEDE;  // See Readme for full voice list
+const chosenVoice = VOICES.DESPINA;  // See Readme for full voice list
 const textToConvert = `This is my voice, called ${chosenVoice}. What do you think about it?`;
-const voiceTone = 'slow, compassionate';
-const voiceAccent = 'English';
+const voiceTone = '';//'slow, compassionate';
+const voiceAccent = '';//'English';
 const outputFileNameTts = `output-tts-${chosenVoice}-${voiceAccent}-${voiceTone.replace(/, /g, '-')}.wav`;
 
 // Native audio specific strings
@@ -47,16 +47,31 @@ if (require.main === module) {
         case 'tts-mode':
             textToVoiceTts(textToConvert, voiceTone, voiceAccent, chosenVoice, outputFileNameTts);
             break;
+        case 'tts-samples':
+            // Generate sample TTS files for all voices
+            (async () => {
+                for (const voiceKey in VOICES) {
+                    const voiceName = VOICES[voiceKey];
+                    const sampleText = `This is my voice, called ${voiceName}. What do you think about it?`;
+                    const sampleOutputFile = `output-tts-sample-${voiceName}.wav`;
+                    console.log(`\nGenerating sample for voice: ${voiceName}`);
+                    await textToVoiceTts(sampleText, '', '', voiceName, sampleOutputFile);
+                    console.log('Pausing for 1 second to avoid rate limiting...');
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // 1-second pause
+                }
+            })();
+            break;
         case 'live-mode':
             textToVoiceNative(nativeAudioText, nativeTone, nativeAccent, nativeVoiceName, nativeOutputFilename);
             break;
         default:
             console.log('Usage: npm start <command>');
             console.log('\nAvailable commands:');
-            console.log('  list-models     - List all available Gemini models');
-            console.log('  list-gen-models - List models with generateContent support');
-            console.log('  tts-mode        - Generate speech using TTS API');
-            console.log('  live-mode       - Generate speech using Live WebSocket API');
+            console.log('  list-models      - List all available Gemini models');
+            console.log('  list-gen-models  - List models with generateContent support');
+            console.log('  tts-mode         - Generate speech using TTS API');
+            console.log('  tts-samples      - Generate short samples of each voice');
+            console.log('  live-mode        - Generate speech using Live WebSocket API');
             break;
     }
 }
