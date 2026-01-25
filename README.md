@@ -70,38 +70,52 @@ Available commands:
 
 The example uses the `Puck` voice. You can change this to any of the following pre-built voices:
 
-- `Achernar`
-- `Achird`
-- `Algenib`
-- `Algieba`
-- `Alnilam`
-- `Aoede`
-- `Autonoe`
-- `Callirrhoe`
-- `Charon`
-- `Despina`
-- `Enceladus`
-- `Erinome`
-- `Fenrir`
-- `Gacrux`
-- `Iapetus`
-- `Kore`
-- `Laomedeia`
-- `Leda`
-- `Orus`
-- `Puck`
-- `Pulcherrima`
-- `Rasalgethi`
-- `Sadachbia`
-- `Sadaltager`
-- `Schedar`
-- `Sulafat`
-- `Umbriel`
-- `Vindemiatrix`
-- `Zephyr`
-- `Zubenelgenubi`
+- `Achernar` - Female
+- `Achird` - Male, Friendly
+- `Algenib` - Male, Gravelly
+- `Algieba` - Male, Smooth
+- `Alnilam` - Male, Firm
+- `Aoede` - Female, Breezy
+- `Autonoe` - Female, Bright
+- `Callirrhoe` - Female, Easy-going
+- `Charon` - Male, Informative
+- `Despina` - Female, Smooth
+- `Enceladus` - Male, Breathy
+- `Erinome` - Female, Clear
+- `Fenrir` - Male, Excitable
+- `Gacrux` - Female, Mature
+- `Iapetus` - Male, Clear
+- `Kore` - Female, Firm
+- `Laomedeia` - Female, Upbeat
+- `Leda` - Female, Youthful
+- `Orus` - Male, Firm
+- `Puck` - Male, Upbeat
+- `Pulcherrima` - Female, Forward
+- `Rasalgethi` - Male, Informative
+- `Sadachbia` - Male, Lively
+- `Sadaltager` - Male, Knowledgeable
+- `Schedar` - Male, Even
+- `Sulafat` - Female, Warm
+- `Umbriel` - Male, Easy-going
+- `Vindemiatrix` - Female, Gentle
+- `Zephyr` - Female, Bright
+- `Zubenelgenubi` - Male, Casual
 
 These voices are available through the Gemini API's text-to-speech models.
+
+## Accent and Language Control
+
+While the voices do not have a fixed ethnicity or accent, you can control the accent by providing instructions in the text prompt. The Gemini API allows for nuanced control over the voice's accent and language.
+
+### Example
+
+To generate speech with an Australian accent, you can modify the text prompt in `index.js` as follows:
+
+```javascript
+const textToConvert = 'Say with an Australian accent: G\'day mate, how ya going?';
+```
+
+You can experiment with different accents and languages by changing the instruction in the prompt.
 
 ## Notes
 
@@ -119,9 +133,13 @@ https://console.cloud.google.com/
 
 ### Google AI Studio
 
-Import the Cloud Console project in AI Studio in order to create an API Keys
+Import the Cloud Console project in AI Studio in order to create an API Key
 
 https://aistudio.google.com/api-keys
+
+Find usage count information and daily api limits
+
+https://aistudio.google.com/usage
 
 ## Blockers
 

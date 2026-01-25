@@ -1,6 +1,7 @@
 const { listAvailableModels, listGenerativeModels } = require("./helpers");
 const { textToVoiceNative } = require("./textToVoiceNative");
 const { textToVoiceTts } = require("./textToVoiceTts");
+const { VOICES } = require("./helpers-audio.js");
 
 // Load environment variables from .env file
 require('dotenv').config();
@@ -14,14 +15,18 @@ require('dotenv').config();
 //
 // You can change the text and voice by modifying the variables below.
 
-const textToConvert = 'Hello, this is a test of the Gemini text-to-speech API with the new voices.';
-const chosenVoice = 'Zephyr';  // See Readme for full voice list
-const outputFileNameTts = 'output-tts.wav';
+const chosenVoice = VOICES.AOEDE;  // See Readme for full voice list
+const textToConvert = `This is my voice, called ${chosenVoice}. What do you think about it?`;
+const voiceTone = 'slow, compassionate';
+const voiceAccent = 'English';
+const outputFileNameTts = `output-tts-${chosenVoice}-${voiceAccent}-${voiceTone.replace(/, /g, '-')}.wav`;
 
 // Native audio specific strings
-const nativeAudioText = 'This is a test of the native audio engine.';
-const nativeAudioVoice = 'Aoede';  // See Readme for full voice list
-const nativeAudioOutputFile = 'output-live.wav';
+const nativeVoiceName = VOICES.AOEDE;  // See Readme for full voice list
+const nativeAudioText = `This is my voice, called ${nativeVoiceName}. What do you think about it?`;
+const nativeTone = 'slow, compassionate';
+const nativeAccent = 'English';
+const nativeOutputFilename = `output-live-${nativeVoiceName}-${nativeAccent}-${voiceTone.replace(/, /g, '-')}.wav`;
 
 // The following code will only run if the file is executed directly.
 if (require.main === module) {
@@ -40,10 +45,10 @@ if (require.main === module) {
             listGenerativeModels();
             break;
         case 'tts-mode':
-            textToVoiceTts(textToConvert, chosenVoice, outputFileNameTts);
+            textToVoiceTts(textToConvert, voiceTone, voiceAccent, chosenVoice, outputFileNameTts);
             break;
         case 'live-mode':
-            textToVoiceNative(nativeAudioText, nativeAudioVoice, nativeAudioOutputFile);
+            textToVoiceNative(nativeAudioText, nativeTone, nativeAccent, nativeVoiceName, nativeOutputFilename);
             break;
         default:
             console.log('Usage: npm start <command>');

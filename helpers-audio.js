@@ -1,5 +1,37 @@
 const fs = require("fs");
-const { WaveFile } = require("wavefile");
+
+const VOICES = {
+    ACHERNAR: 'Achernar',
+    ACHIRD: 'Achird',
+    ALGENIB: 'Algenib',
+    ALGIEBA: 'Algieba',
+    ALNILAM: 'Alnilam',
+    AOEDE: 'Aoede',
+    AUTONOE: 'Autonoe',
+    CALLIRRHOE: 'Callirrhoe',
+    CHARON: 'Charon',
+    DESPINA: 'Despina',
+    ENCELADUS: 'Enceladus',
+    ERINOME: 'Erinome',
+    FENRIR: 'Fenrir',
+    GACRUX: 'Gacrux',
+    IAPETUS: 'Iapetus',
+    KORE: 'Kore',
+    LAOMEDEIA: 'Laomedeia',
+    LEDA: 'Leda',
+    ORUS: 'Orus',
+    PUCK: 'Puck',
+    PULCHERRIMA: 'Pulcherrima',
+    RASALGETHI: 'Rasalgethi',
+    SADACHBIA: 'Sadachbia',
+    SADALTAGER: 'Sadaltager',
+    SCHEDAR: 'Schedar',
+    SULAFAT: 'Sulafat',
+    UMBRIEL: 'Umbriel',
+    VINDEMIATRIX: 'Vindemiatrix',
+    ZEPHYR: 'Zephyr',
+    ZUBENELGENUBI: 'Zubenelgenubi',
+};
 
 /**
  * Analyzes raw PCM buffer to help diagnose audio issues
@@ -121,6 +153,7 @@ function saveProcessedWavFile(pcmBuffer, outputFile, sampleRate = 24000, numChan
 }
 
 module.exports = {
+    VOICES,
     analyzePCMBuffer,
     saveProcessedWavFile
 };

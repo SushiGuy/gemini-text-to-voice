@@ -1,29 +1,6 @@
 // Load environment variables from .env file
 require('dotenv').config();
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const fs = require("fs");
-const { WaveFile } = require("wavefile");
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-/**
- * Saves PCM audio data as a WAV file.
- * @param {Buffer|Buffer[]} pcmData A buffer or array of buffers containing PCM audio data.
- * @param {string} outputFile The path to save the output file to.
- */
-function saveWavFile(pcmData, outputFile) {
-    const pcmBuffer = Array.isArray(pcmData) ? Buffer.concat(pcmData) : pcmData;
-    console.log(`📊 PCM Buffer size: ${pcmBuffer.length} bytes`);
-    const wav = new WaveFile();
-
-    // 1 Channel (Mono), 24kHz, 16-bit is the Gemini Audio standard
-    wav.fromScratch(1, 24000, "16", pcmBuffer);
-    fs.writeFileSync(outputFile, wav.toBuffer());
-    console.log('Saving audio to ', outputFile);
-    console.log(`✅ Success! Audio file saved (Size: ${pcmBuffer.length} bytes)`);
-}
-
 /**
  * Analyzes WebSocket close codes and returns a human-readable message.
  * @param {number} code The WebSocket close code.
@@ -107,41 +84,26 @@ async function listGenerativeModels() {
 }
 
 /**
- * Normalizes 16-bit PCM data to hit maximum volume (32767).
- * This fixes the "quiet" audio issue.
+ * Prepares gemini prompt string for generating the audio
  */
-function normalizePCM(buffer) {
-    console.log("Normalizing audio levels...");
-    Console.lot("Normalizing recommended by Gemini, but as of 1/13 has no effect on either Live or Tts files. Still quiet and scratchy.")
-
-    // Create a 16-bit view of the raw buffer
-    const pcm16 = new Int16Array(buffer.buffer, buffer.byteOffset, buffer.length / 2);
-    let maxAmplitude = 0;
-
-    // 1. Find the peak amplitude
-    for (let i = 0; i < pcm16.length; i++) {
-        const absValue = Math.abs(pcm16[i]);
-        if (absValue > maxAmplitude) maxAmplitude = absValue;
+function formulateGeminiPromptString(tone, accent, text) {
+    let promptString = null;
+    if (tone && accent) {
+        promptString = `Say with a ${accent} accent, in a ${tone} tone: "${text}"`;
+    } else if (accent) {
+        promptString = `Say with a ${accent} accent: "${text}"`;
+    } else if (tone) {
+        promptString = `Say in a ${tone} tone: "${text}"`;
+    } else {
+        promptString = `Say: "${text}"`;
     }
-
-    // 2. If it's already loud or silent, don't touch it
-    if (maxAmplitude === 0 || maxAmplitude > 30000) return buffer;
-
-    // 3. Calculate scaling factor (Target 32767 / Current Peak)
-    const scaleFactor = 32767 / maxAmplitude;
-
-    // 4. Apply gain
-    for (let i = 0; i < pcm16.length; i++) {
-        pcm16[i] = Math.max(-32768, Math.min(32767, pcm16[i] * scaleFactor));
-    }
-
-    return Buffer.from(pcm16.buffer);
+    console.log(`Gemini Prompt: ${promptString}`);
+    return promptString;
 }
 
 module.exports = {
     listAvailableModels,
     listGenerativeModels,
-    saveWavFile,
     getCloseCodeMessage,
-    normalizePCM
+    formulateGeminiPromptString
 };
