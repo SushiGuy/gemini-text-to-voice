@@ -29,7 +29,7 @@ async function textToVoiceNative(text, tone, accent, voiceName, outputFile) {
 
     ws.on('open', () => {
         console.log('Connected to Gemini Live API');
-        console.log('⚠️ Daily limits apply. Multimodal "Live" turns (where the model is "thinking" and "speaking" simultaneously) are significantly more expensive to process than standard text-to-speech.')
+        console.log('⚠️  Daily limits apply. Multimodal "Live" turns (where model is "thinking" and "speaking" simultaneously) are significantly more expensive than standard text-to-speech.')
 
         // 1. Send Setup Message
         const setupMessage = {
@@ -49,6 +49,10 @@ async function textToVoiceNative(text, tone, accent, voiceName, outputFile) {
     ws.on('message', (data) => {
         // console.log('Received message from server:', data.toString());  // Shows a LOT of data, the audio chunks
         const response = JSON.parse(data);
+
+        console.error('❌ CURRENTLY UNSUPPORTED and producing quiet, crackly files. Gemini Live API meant for real-time interaction. Use TTS mode instead.');
+        ws.close();
+        return;
 
         // 2. Handle the Setup Confirmation
         if (response.setupComplete) {

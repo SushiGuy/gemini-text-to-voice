@@ -45,7 +45,9 @@ To run the program:
 3. Edit the text and voice in `index.js`:
    ```javascript
    const textToConvert = 'Your text here';
-   const chosenVoice = 'Puck'; // or another available voice
+   const chosenVoice = VOICES.ZEPHYR; // or another available voice
+   const voiceTone = 'enthusiastic'; // or blank
+   const voiceAccent = 'British'; // or blank
    ```
 
 4. Run the program:
@@ -64,7 +66,7 @@ Available commands:
 - `npm run list-models` - List available models
 - `npm run list-gen-models` - List generative models
 - `npm start tts-mode` - Text-to-speech mode (TTS API)
-- `npm start live-mode` - Native audio engine mode (Live API)
+- `npm start live-mode` - CURRENTLY UNSUPPORTED - Native audio engine mode (Live API)
 
 ## Available Voices
 

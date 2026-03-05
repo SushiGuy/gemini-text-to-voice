@@ -15,17 +15,18 @@ require('dotenv').config();
 //
 // You can change the text and voice by modifying the variables below.
 
-const chosenVoice = VOICES.DESPINA;  // See Readme for full voice list
+// Text-to-Speech settings
+const chosenVoice = VOICES.ZEPHYR;  // See Readme for full voice list
 const textToConvert = `This is my voice, called ${chosenVoice}. What do you think about it?`;
-const voiceTone = '';//'slow, compassionate';
-const voiceAccent = '';//'English';
+const voiceTone = 'enthusiastic';//'slow, compassionate, enthusiastic';
+const voiceAccent = '';//'British';
 const outputFileNameTts = `output-tts-${chosenVoice}-${voiceAccent}-${voiceTone.replace(/, /g, '-')}.wav`;
 
-// Native audio specific strings
-const nativeVoiceName = VOICES.AOEDE;  // See Readme for full voice list
+// Gemini Live APIsettings
+const nativeVoiceName = VOICES.ZEPHYR;  // See Readme for full voice list
 const nativeAudioText = `This is my voice, called ${nativeVoiceName}. What do you think about it?`;
-const nativeTone = 'slow, compassionate';
-const nativeAccent = 'English';
+const nativeTone = 'enthusiastic';
+const nativeAccent = '';//'British';
 const nativeOutputFilename = `output-live-${nativeVoiceName}-${nativeAccent}-${voiceTone.replace(/, /g, '-')}.wav`;
 
 // The following code will only run if the file is executed directly.
